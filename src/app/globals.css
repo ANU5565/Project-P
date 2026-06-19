@@ -1,26 +1,63 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-background: #050505;
+  --color-secondary: #0E0E0E;
+  --color-glass: rgba(255, 255, 255, 0.06);
+  --color-border-glass: rgba(255, 255, 255, 0.12);
+  --color-text-main: #ffffff;
+  --color-accent: #55F5FF;
+  --color-accent-glow: #8AF9FF;
+
+  --font-space: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  --font-inter: var(--font-inter), "Inter", sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), "IBM Plex Mono", monospace;
+  /* Satoshi via fontshare or local will fallback to Inter for now if not loaded */
+  --font-satoshi: "Satoshi", var(--font-inter), sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text-main);
+    font-family: var(--font-inter);
+    /* cursor: none;  Disabled during dev so we can use mouse normally before custom cursor is ready */
+    overflow-x: hidden;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .glass-card {
+    background-color: var(--color-glass);
+    border: 1px solid var(--color-border-glass);
+    backdrop-filter: blur(12px);
+    border-radius: 1rem;
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 10px var(--color-accent), 0 0 20px var(--color-accent);
+  }
+  
+  .box-glow {
+    box-shadow: 0 0 15px rgba(85, 245, 255, 0.3), 0 0 30px rgba(85, 245, 255, 0.1);
+  }
+  
+  .bg-grid {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
+  
+  .scan-line {
+    background: linear-gradient(to bottom, transparent, rgba(85, 245, 255, 0.1), transparent);
+  }
+  
+  .hide-cursor, .hide-cursor * {
+    cursor: none !important;
+  }
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
 }
