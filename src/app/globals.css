@@ -9,9 +9,9 @@
   --color-accent: #55F5FF;
   --color-accent-glow: #8AF9FF;
 
-  --font-space: var(--font-space-grotesk), "Space Grotesk", sans-serif;
-  --font-inter: var(--font-inter), "Inter", sans-serif;
-  --font-mono: var(--font-ibm-plex-mono), "IBM Plex Mono", monospace;
+  --font-space: "Space Grotesk", "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-inter: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   /* Satoshi via fontshare or local will fallback to Inter for now if not loaded */
   --font-satoshi: "Satoshi", var(--font-inter), sans-serif;
 }

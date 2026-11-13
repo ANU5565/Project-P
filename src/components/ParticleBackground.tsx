@@ -1,30 +1,35 @@
 "use client";
 
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+const seededNoise = (index: number, seed: number) => {
+  const value = Math.sin(index * 12.9898 + seed * 78.233) * 43758.5453;
+  return value - Math.floor(value);
+};
+
 function Particles() {
   const points = useRef<THREE.Points>(null!);
-  
-  // Generate random particles
-  const count = 1500;
-  const positions = new Float32Array(count * 3);
-  const colors = new Float32Array(count * 3);
-  
-  const color = new THREE.Color("#55F5FF");
-  
-  for (let i = 0; i < count; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 20;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 10 - 2; // offset Z a bit
-    
-    // Varying opacity/intensity for particles
-    const intensity = Math.random() * 0.5 + 0.1;
-    colors[i * 3] = color.r * intensity;
-    colors[i * 3 + 1] = color.g * intensity;
-    colors[i * 3 + 2] = color.b * intensity;
-  }
+  const { positions, colors } = useMemo(() => {
+    const count = 1500;
+    const nextPositions = new Float32Array(count * 3);
+    const nextColors = new Float32Array(count * 3);
+    const color = new THREE.Color("#55F5FF");
+
+    for (let i = 0; i < count; i++) {
+      nextPositions[i * 3] = (seededNoise(i, 1) - 0.5) * 20;
+      nextPositions[i * 3 + 1] = (seededNoise(i, 2) - 0.5) * 20;
+      nextPositions[i * 3 + 2] = (seededNoise(i, 3) - 0.5) * 10 - 2;
+
+      const intensity = seededNoise(i, 4) * 0.5 + 0.1;
+      nextColors[i * 3] = color.r * intensity;
+      nextColors[i * 3 + 1] = color.g * intensity;
+      nextColors[i * 3 + 2] = color.b * intensity;
+    }
+
+    return { positions: nextPositions, colors: nextColors };
+  }, []);
 
   useFrame((state) => {
     if (points.current) {
